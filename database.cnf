@@ -1,0 +1,5 @@
+[client]
+database = Switter
+user = Switter
+password = Switter
+default-character-set = utf8
