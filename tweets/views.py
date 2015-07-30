@@ -1,9 +1,8 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
-
-@require_POST
-def create(request):
+def add(request):
+    print(request)
     return JsonResponse({'status': 'OK'})
 
 
