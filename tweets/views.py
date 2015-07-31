@@ -26,11 +26,12 @@ def fetch(request):
 @require_POST
 def create(request):
     tweet_data = request.POST['tweet_data']
+    author_data = tweet_data['author']
 
     try:
         tweet = Tweet.objects.get(pk=tweet_data['id'])
     except Tweet.DoesNotExist:
-        tweet = Tweet.objects.create(
+        tweet = Tweet(
             id=tweet_data['id'],
             created_at=tweet_data['created_at'],
             favorite_count=tweet_data['favorite_count'],
@@ -38,12 +39,12 @@ def create(request):
         )
 
         try:
-            author = Author.objects.get(pk=tweet_data['author']['screen_name'])
+            author = Author.objects.get(pk=author_data['screen_name'])
         except Author.DoesNotExist:
             author = Author.objects.create(
-                screen_name=tweet_data['author']['screen_name'],
-                name=tweet_data['author']['name'],
-                profile_image_url=tweet_data['author']['profile_image_url']
+                screen_name=author_data['screen_name'],
+                name=author_data['name'],
+                profile_image_url=author_data['profile_image_url']
             )
 
         tweet.author = author
@@ -51,12 +52,12 @@ def create(request):
 
         for rt_author_data in tweet_data['retweeted_by']:
             try:
-                rt_author = Author.objects.get(pk=rt_author_data.screen_name)
+                rt_author = Author.objects.get(pk=rt_author_data['screen_name'])
             except Author.DoesNotExist:
                 rt_author = Author.objects.create(
-                    screen_name=rt_author_data.screen_name,
-                    name=rt_author_data.name,
-                    profile_image_url=rt_author_data.profile_image_url
+                    screen_name=rt_author_data['screen_name'],
+                    name=rt_author_data['name'],
+                    profile_image_url=rt_author_data['profile_image_url']
                 )
 
             tweet.retweet_authors.add(rt_author)
