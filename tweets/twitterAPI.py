@@ -11,58 +11,56 @@ api = tweepy.API(auth)
 
 
 def get_tweet(tweet_id):
-    try:
-        retrieved_tweet = api.get_status(tweet_id)
-        retweets = retrieved_tweet.retweets()
-    except:
-        # handle API query limitations here
-        print('Error')
-        return None
+    # TODO: handle API query limitations
 
-    tweet_data = {
-        'id': retrieved_tweet.id_str,
-        'created_at': pytz.timezone(timezone.get_current_timezone_name()).localize(retrieved_tweet.created_at),
-        'favorite_count': retrieved_tweet.favorite_count,
-        'text': retrieved_tweet.text,
+    print(tweet_id)
+    api_data = api.get_status(tweet_id)
+
+    if hasattr(api_data, 'retweeted_status'):
+        context = api_data.retweeted_status
+        retweet = {
+            'id': api_data.id_str,
+            'created_at': pytz\
+                .timezone(timezone.get_current_timezone_name())\
+                .localize(api_data.created_at),
+            'author': {
+                'screen_name': api_data.author.screen_name,
+                'name': api_data.author.name,
+                'profile_image_url': api_data.author.profile_image_url
+            }
+        }
+    else:
+        context = api_data
+        retweet = None
+
+    tweet = {
+        'id': context.id_str,
+        'created_at': pytz\
+            .timezone(timezone.get_current_timezone_name())\
+            .localize(context.created_at),
         'author': {
-            'screen_name': retrieved_tweet.author.screen_name,
-            'name': retrieved_tweet.author.name,
-            'profile_image_url': retrieved_tweet.author.profile_image_url
+            'screen_name': context.author.screen_name,
+            'name': context.author.name,
+            'profile_image_url': context.author.profile_image_url
         },
+        'favorite_count': context.favorite_count,
+        'text': context.text,
         'retweeted_by': []
     }
 
+    retweets = context.retweets()
+
     for rt in retweets:
-        tweet_data['retweeted_by'].append({
+        tweet['retweeted_by'].append({
             'screen_name': rt.author.screen_name,
             'name': rt.author.name,
             'profile_image_url': rt.author.profile_image_url
         })
 
-    return tweet_data
-
-
-def get_retweet(tweet_id):
-    try:
-        retrieved_tweet = api.get_status(tweet_id)
-    except:
-        # handle API query limitations here
-        print('Error')
-        return
-
-    tweet_data = {
-        'id': retrieved_tweet.id_str,
-        'created_at': pytz.timezone(timezone.get_current_timezone_name()).localize(retrieved_tweet.created_at),
-        'author': {
-            'screen_name': retrieved_tweet.author.screen_name,
-            'name': retrieved_tweet.author.name,
-            'profile_image_url': retrieved_tweet.author.profile_image_url
-        }
+    return {
+        'tweet': tweet,
+        'retweet': retweet
     }
-
-    return tweet_data
-
-
 
 #
 # def store_retweet(retweet_id):

@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-from .twitterAPI import get_retweet, get_tweet
+from .twitterAPI import get_tweet
 from .models import Tweet, Author
 
 
@@ -9,17 +9,7 @@ from .models import Tweet, Author
 @require_POST
 def fetch(request):
     tweet_id = request.POST['tweet_id']
-
-    response = {
-        'tweet': get_tweet(tweet_id)
-    }
-
-    if 'retweet_id' in request.POST.keys():
-        retweet_id = request.POST['retweet_id']
-        if retweet_id is not None:
-            response['retweet'] = get_retweet(retweet_id)
-
-    return JsonResponse(response)
+    return JsonResponse(get_tweet(tweet_id))
 
 
 @csrf_exempt
@@ -75,4 +65,3 @@ def create(request):
 
 
     return JsonResponse({'status': 'OK'})
-
