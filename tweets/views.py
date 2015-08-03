@@ -1,5 +1,5 @@
 from django.utils.dateparse import parse_datetime
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from django.views.decorators.csrf import csrf_exempt
 from jsonview.decorators import json_view
 from json import loads
@@ -10,6 +10,13 @@ from .models import Tweet, Author
 @json_view
 def test(request):
     return {'status': 'OK'}
+
+
+@json_view
+@require_GET
+def get(request):
+    tweets = Tweet.objects.all()
+    return [tweet.serialize() for tweet in tweets]
 
 
 @csrf_exempt
@@ -59,7 +66,7 @@ def create(request):
     if 'retweeted_by' in tweet_data.keys():
         for rt_author_data in tweet_data['retweeted_by']:
             rt_author = store_author(rt_author_data)
-            tweet.retweet_authors.add(rt_author)
+            tweet.retweeted_by.add(rt_author)
 
         tweet.save()
 
@@ -69,9 +76,9 @@ def create(request):
             tweet.original_tweet = original_tweet
             tweet.save()
 
-            retweet_author_names = [author.screen_name for author in original_tweet.retweet_authors.all()]
+            retweet_author_names = [author.screen_name for author in original_tweet.retweeted_by.all()]
             if tweet.author.screen_name not in retweet_author_names:
-                original_tweet.retweet_authors.add(tweet.author)
+                original_tweet.retweeted_by.add(tweet.author)
                 original_tweet.save()
         except Tweet.DoesNotExist:
             return {'status': 'Cannot find original tweet for the retweet. Please, save the original tweet before saving retweet'}, 500
