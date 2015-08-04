@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Author',
             fields=[
-                ('screen_name', models.CharField(primary_key=True, max_length=50, serialize=False)),
+                ('screen_name', models.CharField(primary_key=True, serialize=False, max_length=50)),
                 ('name', models.CharField(max_length=50)),
                 ('profile_image_url', models.URLField()),
             ],
@@ -21,14 +21,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Tweet',
             fields=[
-                ('id', models.CharField(primary_key=True, max_length=50, serialize=False)),
+                ('id', models.CharField(primary_key=True, serialize=False, max_length=50)),
                 ('created_at', models.DateTimeField()),
                 ('favorite_count', models.IntegerField(null=True)),
-                ('retweet_count', models.IntegerField(null=True)),
-                ('text', models.CharField(null=True, default='', max_length=255)),
-                ('author', models.ForeignKey(to='tweets.Author', db_column='author_screen_name')),
-                ('original_tweet', models.ForeignKey(to='tweets.Tweet', null=True)),
-                ('retweet_authors', models.ManyToManyField(to='tweets.Author', related_name='retweet_authors')),
+                ('text', models.CharField(default='', null=True, max_length=255)),
+                ('author', models.ForeignKey(db_column='author_screen_name', to='api.Author')),
+                ('original_tweet', models.ForeignKey(null=True, to='api.Tweet')),
+                ('retweeted_by', models.ManyToManyField(null=True, related_name='retweeted_by', to='api.Author')),
             ],
             options={
                 'ordering': ['-created_at'],
