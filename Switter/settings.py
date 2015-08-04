@@ -39,8 +39,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'tweets',
-    'client'
+    'twitter_api'
+    # 'tweets',
+    # 'client'
 )
 
 MIDDLEWARE_CLASSES = (
