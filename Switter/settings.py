@@ -39,8 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'twitter_api'
-    # 'tweets',
+    'twitter_api',
+    'api',
     # 'client'
 )
 

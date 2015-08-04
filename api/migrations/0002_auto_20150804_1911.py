@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tweets', '0003_auto_20150803_1852'),
+        ('api', '0001_initial'),
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.RenameField(
             model_name='tweet',
-            name='retweeted_by',
-            field=models.ManyToManyField(related_name='retweeted_by', null=True, to='tweets.Author'),
+            old_name='original_tweet',
+            new_name='retweeted_status',
         ),
     ]

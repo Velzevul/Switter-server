@@ -11,21 +11,6 @@ class TweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tweet
 
-    def create(self, validated_data):
-        retweet_authors = []
-        if 'retweeted_by' in validated_data.keys():
-            retweet_author_ids = validated_data.pop('retweeted_by')
-            retweet_authors = Author.objects.in_bulk(retweet_author_ids)
-
-        tweet = Tweet(**validated_data)
-        tweet.save()
-
-        for retweet_author in retweet_authors:
-            tweet.retweeted_by.add(retweet_author)
-            tweet.save()
-
-        return tweet
-
 
 class OriginalTweetSerializer(serializers.ModelSerializer):
     author = AuthorSerializer()
@@ -38,7 +23,7 @@ class OriginalTweetSerializer(serializers.ModelSerializer):
 class TweetNestedSerializer(serializers.ModelSerializer):
     author = AuthorSerializer()
     retweeted_by = AuthorSerializer(many=True)
-    original_tweet = OriginalTweetSerializer()
+    retweeted_status = OriginalTweetSerializer()
 
     class Meta:
         model = Tweet

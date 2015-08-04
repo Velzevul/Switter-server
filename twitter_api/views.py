@@ -47,7 +47,7 @@ def tweet(request, id):
 
     if hasattr(api_data, 'retweeted_status'):
         retweeted_status = build_tweet(api_data.retweeted_status)
-        tweet['retweet_of'] = retweeted_status
+        tweet['retweeted_status'] = retweeted_status
         context = api_data.retweeted_status
         target = retweeted_status
     else:
