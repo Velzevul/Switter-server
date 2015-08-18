@@ -1,11 +1,16 @@
+astroid==1.3.8
 Django==1.8.3
 django-cors-headers==1.1.0
 django-jsonview==0.4.3
 djangorestframework==3.1.3
 gnureadline==6.3.3
+gunicorn==19.3.0
 ipython==3.2.1
+logilab-common==1.0.2
 mysqlclient==1.3.6
 oauthlib==1.0.1
+pep8==1.6.2
+pylint==1.4.4
 pytz==2015.4
 querystring-parser==1.2.0
 requests==2.7.0
