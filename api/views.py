@@ -16,7 +16,7 @@ def tweets(request):
         return author
 
     if request.method == 'GET':
-        tweets = Tweet.objects.all()
+        tweets = Tweet.objects.filter(is_deployed__exact=True).order_by('-created_at')
         serializer = TweetNestedSerializer(tweets, many=True)
         return Response(serializer.data)
 
