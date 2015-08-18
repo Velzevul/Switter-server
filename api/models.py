@@ -19,8 +19,10 @@ class Tweet(models.Model):
     author = models.ForeignKey(Author, db_column='author_screen_name')
     retweeted_by = models.ManyToManyField(Author, related_name='retweeted_by', null=True)
     retweeted_status = models.ForeignKey('self', null=True)
-    # commands
-    # preview_image_url
+    preview_image_url = models.CharField(max_length=255, default=None, null=True)
+    menu_items = models.CharField(max_length=255, default=None, null=True)
+    toolbar_items = models.CharField(max_length=255, default=None, null=True)
+    panelbar_items = models.CharField(max_length=255, default=None, null=True)
 
     def __str__(self):
         return self.text
