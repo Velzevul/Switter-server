@@ -6,3 +6,5 @@ secret.key
 database.cnf
 gunicorn.conf.py
 nginx.conf
+test.log
+run_task.sh
