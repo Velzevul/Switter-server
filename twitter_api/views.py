@@ -1,4 +1,3 @@
-
 from django.utils import timezone
 import tweepy
 import pytz
