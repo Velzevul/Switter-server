@@ -19,7 +19,7 @@ from django.contrib import admin
 from client import views as client_views
 
 urlpatterns = [
-    # url(r'^$', client_views.index),
     url(r'^api/', include('api.urls')),
-    url(r'^twitter-api/', include('twitter_api.urls'))
+    url(r'^twitter-api/', include('twitter_api.urls')),
+    url(r'^logger/', include('logger.urls'))
 ]

@@ -42,7 +42,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'twitter_api',
     'api',
-    # 'client'
+    'logger'
 )
 
 MIDDLEWARE_CLASSES = (
