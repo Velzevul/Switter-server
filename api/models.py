@@ -20,9 +20,9 @@ class Tweet(models.Model):
     retweeted_by = models.ManyToManyField(Author, related_name='retweeted_by', null=True)
     retweeted_status = models.ForeignKey('self', null=True)
     preview_image_url = models.CharField(max_length=255, default=None, null=True)
-    menu_items = models.CharField(max_length=255, default=None, null=True)
-    toolbar_items = models.CharField(max_length=255, default=None, null=True)
-    panelbar_items = models.CharField(max_length=255, default=None, null=True)
+    menu_items = models.TextField(default=None, null=True)
+    toolbar_items = models.TextField(default=None, null=True)
+    panelbar_items = models.TextField(default=None, null=True)
 
     is_deployed = models.BooleanField(default=False)
 
