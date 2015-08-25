@@ -1,10 +1,15 @@
 from rest_framework import serializers
-from .models import Author, Tweet
+from .models import Author, Tweet, Lock
 
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
+
+
+class LockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lock
 
 
 class TweetSerializer(serializers.ModelSerializer):

@@ -1,9 +1,9 @@
 from json import loads
-from .models import Tweet, Author
+from .models import Tweet, Author, Lock
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import TweetSerializer, TweetNestedSerializer, AuthorSerializer
+from .serializers import TweetSerializer, TweetNestedSerializer, AuthorSerializer, LockSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -47,20 +47,45 @@ def tweets(request):
 
 
 @api_view(['GET'])
-def tweet(request, id):
+def tweet(request, tweet_id):
     try:
-        tweet = Tweet.objects.get(pk=id)
-        serializer = TweetNestedSerializer(tweet)
+        t = Tweet.objects.get(pk=tweet_id)
+        serializer = TweetNestedSerializer(t)
         return Response(serializer.data)
     except Tweet.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET', 'POST'])
+def locks(request):
+    if request.method == 'GET':
+        all_locks = Lock.objects.all()
+        serializer = LockSerializer(all_locks, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        serializer = LockSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def lock(request, tweet_id):
+    try:
+        l = Lock.objects.get(pk=tweet_id)
+        serializer = LockSerializer(l)
+        return Response(serializer.data)
+    except Lock.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET', 'POST'])
 def users(request):
     if request.method == 'GET':
-        users = Author.objects.all()
-        serializer = AuthorSerializer(users, many=True)
+        all_users = Author.objects.all()
+        serializer = AuthorSerializer(all_users, many=True)
         return Response(serializer.data)
 
     if request.method == 'POST':
@@ -78,8 +103,8 @@ def users(request):
 @api_view(['GET'])
 def user(request, screen_name):
     try:
-        user = Author.objects.get(pk=screen_name)
-        serializer = AuthorSerializer(user)
+        u = Author.objects.get(pk=screen_name)
+        serializer = AuthorSerializer(u)
         return Response(serializer.data)
     except Author.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)

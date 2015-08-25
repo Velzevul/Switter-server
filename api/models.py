@@ -28,3 +28,8 @@ class Tweet(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class Lock(models.Model):
+    id = models.CharField(max_length=50, primary_key=True)
+    user_id = models.CharField(max_length=50)
