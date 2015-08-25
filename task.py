@@ -13,7 +13,7 @@ from api.models import Tweet
 
 def task():
     now = datetime.now()
-    t = Tweet.objects.filter(is_deployed__exact=False).first()
+    t = Tweet.objects.filter(is_deployed__exact=False).order_by('?').first()
     non_deployed_tweets_left = Tweet.objects.filter(is_deployed__exact=False).count()
     if t is None:
         print('{0}: No more tweets to deploy!'.format(now.ctime()))
