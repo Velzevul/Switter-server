@@ -19,15 +19,15 @@ def task():
         print('{0}: No more tweets to deploy!'.format(now.ctime()))
     else:
         if now.hour < 8:
-            threshold = 0.8
+            threshold = 0.9
         elif now.hour < 12:
-            threshold = 0.65
+            threshold = 0.75
         elif now.hour < 16:
-            threshold = 0.5
+            threshold = 0.6
         elif now.hour < 21:
-            threshold = 0.65
+            threshold = 0.75
         else:
-            threshold = 0.8
+            threshold = 0.9
 
         chance = random()
         if chance > threshold:
