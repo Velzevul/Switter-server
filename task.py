@@ -21,11 +21,11 @@ def task():
         if now.hour < 8:
             threshold = 0.85
         elif now.hour < 12:
-            threshold = 0.65
+            threshold = 0.7
         elif now.hour < 16:
-            threshold = 0.5
+            threshold = 0.6
         elif now.hour < 21:
-            threshold = 0.65
+            threshold = 0.7
         else:
             threshold = 0.85
 
